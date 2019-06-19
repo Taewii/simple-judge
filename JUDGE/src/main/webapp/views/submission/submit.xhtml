@@ -1,0 +1,21 @@
+<ui:composition template="../templates/base-layout.xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+>
+    <ui:define name="main-content">
+        <h1 class="text-center text-judge">Problem - FIX MEEE</h1>
+        <hr class="hr-2 bg-judge"/>
+        <h3 class="text-judge my-3">Submit your code here:</h3>
+        <h:form id="create-submission-form" class="form">
+            <div class="w-100 rounded bg-code text-code d-flex flex-column p-3">
+                <h:inputTextarea class="code-line" value="#{createSubmissionBean.model.code}"/>
+            </div>
+            <hr class="hr-2 bg-judge"/>
+            <div class="d-flex justify-content-center">
+                <h:commandButton styleClass="btn bg-judge font-weight-bold text-white" value="Submit"
+                                 action="#{createSubmissionBean.create}"/>
+            </div>
+            <hr class="hr-2 bg-judge"/>
+        </h:form>
+        <h:messages styleClass="error-msg"/>
+    </ui:define>
+</ui:composition>

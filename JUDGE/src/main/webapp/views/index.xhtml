@@ -1,0 +1,36 @@
+<ui:composition template="templates/base-layout.xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:define name="main-content">
+        <c:choose>
+            <c:when test="#{username == null}">
+                <div class="jumbotron bg-judge">
+                    <h1 class="text-white">Welcome to the <span class="font-weight-bold">JUDGE</span> Platform!</h1>
+                    <hr class="hr-2 bg-white"/>
+                    <h3 class="text-white"><a href="/login">Login</a> to use the Platform.</h3>
+                    <h3 class="text-white"><a href="/register">Register</a> if you don't have an account.</h3>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <div id="problems">
+                    <c:forEach items="#{homeBean.problems}" var="problem" varStatus="loop">
+                        <h:outputText value="&lt;div class='problem-row d-flex justify-content-around row mt-4'&gt;"
+                                      escape="false" rendered="#{loop.index % 4 == 0}"/>
+                        <div class="problem bg-judge text-white rounded p-3 col-md-2">
+                            <h5 class="text-center font-weight-bold">#{problem.name}</h5>
+                            <h5 class="text-center mt-3">Completed: FIX MEE</h5>
+                            <hr class="hr-2 bg-white"/>
+                            <div class="d-flex justify-content-between mt-4">
+                                <a href="/problems/submit/#{problem.id}"
+                                   class="text-white font-weight-bold"><h5>Submit</h5></a>
+                                <a href="/problems/details/#{problem.id}"
+                                   class="text-white font-weight-bold"><h5>Details</h5></a>
+                            </div>
+                        </div>
+                        <h:outputText value="&lt;/div&gt;" escape="false"
+                                      rendered="#{loop.last or (loop.index + 1) % 4 == 0}"/>
+                    </c:forEach>
+                </div>
+            </c:otherwise>
+        </c:choose>
+    </ui:define>
+</ui:composition>
