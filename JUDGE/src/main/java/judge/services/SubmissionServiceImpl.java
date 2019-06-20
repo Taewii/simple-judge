@@ -5,13 +5,17 @@ import judge.domain.entities.Submission;
 import judge.domain.entities.User;
 import judge.domain.models.binding.CreateSubmissionBindingModel;
 import judge.domain.models.service.ProblemServiceModel;
+import judge.domain.models.view.DetailsSubmissionViewModel;
 import judge.repositories.SubmissionRepository;
+import judge.util.JavaScriptCodeExecutor;
 import judge.util.ModelValidator;
 import org.modelmapper.ModelMapper;
 
 import javax.inject.Inject;
+import javax.script.ScriptException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -35,9 +39,9 @@ public class SubmissionServiceImpl implements SubmissionService {
 
 
     @Override
-    public boolean create(CreateSubmissionBindingModel model, String problemId, String userId) {
+    public Optional<String> create(CreateSubmissionBindingModel model, String problemId, String userId) {
         if (!ModelValidator.isValid(model)) {
-            return false;
+            return Optional.empty();
         }
 
         Random random = new Random();
@@ -53,7 +57,23 @@ public class SubmissionServiceImpl implements SubmissionService {
                 .collect(Collectors.toList()));
         entity.setAchievedResult(random.ints(1, 0, problemById.getPoints()).findFirst().orElse(0));
 
-        this.submissionRepository.save(entity);
-        return true;
+        try {
+            Object functionResult = JavaScriptCodeExecutor.executeScript(model.getCode());
+            if (functionResult.equals(entity.getProblem().getPoints())) {
+                entity.setAchievedResult(entity.getProblem().getPoints());
+            }
+        } catch (ScriptException | NoSuchMethodException e) {
+            e.printStackTrace();
+            return Optional.empty();
+
+        }
+
+        Submission submission = this.submissionRepository.update(entity);
+        return Optional.of(submission.getId());
+    }
+
+    @Override
+    public DetailsSubmissionViewModel findDetailsViewModelById(String id) {
+        return this.mapper.map(this.submissionRepository.findOne(id), DetailsSubmissionViewModel.class);
     }
 }

@@ -17,7 +17,7 @@
                                       escape="false" rendered="#{loop.index % 4 == 0}"/>
                         <div class="problem bg-judge text-white rounded p-3 col-md-2">
                             <h5 class="text-center font-weight-bold">#{problem.name}</h5>
-                            <h5 class="text-center mt-3">Completed: FIX MEE</h5>
+                            <h5 class="text-center mt-3">Completed: #{problem.completion}%</h5>
                             <hr class="hr-2 bg-white"/>
                             <div class="d-flex justify-content-between mt-4">
                                 <a href="/problems/submit/#{problem.id}"

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Model
 @NoArgsConstructor
-public class HomeBean {
+public class HomeBean extends BaseBean {
 
     private List<HomeProblemViewModel> problems;
 
@@ -24,7 +24,8 @@ public class HomeBean {
 
     @PostConstruct
     private void init() {
-        this.problems = this.problemService.findAll();
+        String userId = (String) super.externalContext.getSessionMap().get("user-id");
+        this.problems = this.problemService.findAll(userId);
     }
 
     public List<HomeProblemViewModel> getProblems() {

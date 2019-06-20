@@ -24,11 +24,10 @@ public class CreateSubmissionBean extends BaseBean {
     public void create() {
         String problemId = super.externalContext.getRequestHeaderMap().get("referer").substring(38);
         String userId = (String) super.externalContext.getSessionMap().get("user-id");
-        if (this.submissionService.create(this.model, problemId, userId)) {
-            super.redirect("/");
-        } else {
-            super.addMessage("Unable to create problem. Please try again");
-        }
+
+        this.submissionService.create(this.model, problemId, userId)
+                .ifPresentOrElse(sub -> super.redirect("/submissions/details/" + sub),
+                        () -> super.redirect("/problems/submit/" + problemId));
     }
 
     public CreateSubmissionBindingModel getModel() {

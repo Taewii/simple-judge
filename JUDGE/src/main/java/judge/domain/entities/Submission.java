@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name = "submissions")
 public class Submission extends BaseEntity {
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "submission_code",
             joinColumns = @JoinColumn(name = "submission_id"))

@@ -33,7 +33,8 @@ public class RoutingConfiguration extends HttpConfigurationProvider {
                 .addRule(Join.path("/login").to("/faces/views/user/login.xhtml"))
                 .addRule(Join.path("/problems/create").to("/faces/views/problem/create.xhtml"))
                 .addRule(Join.path("/problems/details/{id}").to("/faces/views/problem/details.xhtml"))
-                .addRule(Join.path("/problems/submit/{id}").to("/faces/views/submission/submit.xhtml"));
+                .addRule(Join.path("/problems/submit/{id}").to("/faces/views/submission/submit.xhtml"))
+                .addRule(Join.path("/submissions/details/{id}").to("/faces/views/submission/details.xhtml"));
     }
 
     @Override

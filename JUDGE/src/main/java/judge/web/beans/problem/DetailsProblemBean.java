@@ -25,7 +25,7 @@ public class DetailsProblemBean extends BaseBean {
     @PostConstruct
     private void init() {
         String id = super.externalContext.getRequestParameterMap().get("id");
-        this.problem = this.problemService.findByIdWithSubmissions(id);
+        this.problem = this.problemService.findDetailsModelById(id);
     }
 
     public DetailsProblemViewModel getProblem() {

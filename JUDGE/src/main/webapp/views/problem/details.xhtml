@@ -1,11 +1,18 @@
 <ui:composition template="../templates/base-layout.xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
->
+                xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
     <ui:define name="main-content">
         <h1 class="text-center text-judge">Problem Details - #{detailsProblemBean.problem.name}</h1>
         <hr class="hr-2 bg-judge"/>
         <div class="d-flex justify-content-between">
             <h2 class="text-judge">Problem Id - #{detailsProblemBean.problem.id}</h2>
-            <h2 class="text-judge">Success Rate - 33.33 %</h2>
+            <h2 class="text-judge">
+                Success Rate -
+                <h:outputText value="#{detailsProblemBean.problem.successRate}">
+                    <f:convertNumber pattern="#0.00"/>
+                </h:outputText>
+                %
+            </h2>
         </div>
         <hr class="hr-2 bg-judge"/>
         <h3 class="text-judge text-center">Problem Submissions</h3>
@@ -20,42 +27,19 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="row">
-                <td class="col-md-4" scope="col"><h5 class="text-center">f8b44d7c-e173-4bc7-990d-7b85dbd2ded0</h5></td>
-                <td class="col-md-3" scope="col"><h5 class="text-center">John Doe</h5></td>
-                <td class="col-md-3" scope="col"><h2 class="text-center">100 / 100 (100 %)</h2></td>
-                <td class="col-md-2 d-flex justify-content-around" scope="col">
-                    <a href="/submissions/details/f8b44d7c-e173-4bc7-990d-7b85dbd2ded0"
-                       class="btn bg-judge text-white font-weight-bold pt-2"><h4>Details</h4></a>
-                </td>
-            </tr>
-            <tr class="row">
-                <td class="col-md-4" scope="col"><h5 class="text-center">078363f2-4951-4d3c-924d-c407931f3b1d</h5></td>
-                <td class="col-md-3" scope="col"><h5 class="text-center">John Doe</h5></td>
-                <td class="col-md-3" scope="col"><h2 class="text-center">30 / 100 (30 %)</h2></td>
-                <td class="col-md-2 d-flex justify-content-around" scope="col">
-                    <a href="/submissions/details/078363f2-4951-4d3c-924d-c407931f3b1d"
-                       class="btn bg-judge text-white font-weight-bold pt-2"><h4>Details</h4></a>
-                </td>
-            </tr>
-            <tr class="row">
-                <td class="col-md-4" scope="col"><h5 class="text-center">9947f032-fde1-488d-a027-654eef777c07</h5></td>
-                <td class="col-md-3" scope="col"><h5 class="text-center">Jack Daniels</h5></td>
-                <td class="col-md-3" scope="col"><h2 class="text-center">0 / 100 (0 %)</h2></td>
-                <td class="col-md-2 d-flex justify-content-around" scope="col">
-                    <a href="/submissions/details/9947f032-fde1-488d-a027-654eef777c07"
-                       class="btn bg-judge text-white font-weight-bold pt-2"><h4>Details</h4></a>
-                </td>
-            </tr>
-            <tr class="row">
-                <td class="col-md-4" scope="col"><h5 class="text-center">babdc3ab-57b3-4271-8253-259d0d40619f</h5></td>
-                <td class="col-md-3" scope="col"><h5 class="text-center">Johnnie Walker</h5></td>
-                <td class="col-md-3" scope="col"><h2 class="text-center">97 / 100 (97 %)</h2></td>
-                <td class="col-md-2 d-flex justify-content-around" scope="col">
-                    <a href="/submissions/details/babdc3ab-57b3-4271-8253-259d0d40619f"
-                       class="btn bg-judge text-white font-weight-bold pt-2"><h4>Details</h4></a>
-                </td>
-            </tr>
+            <c:forEach items="#{detailsProblemBean.problem.submissions}" var="submission">
+                <tr class="row">
+                    <td class="col-md-4" scope="col"><h5 class="text-center">#{submission.id}</h5></td>
+                    <td class="col-md-3" scope="col"><h5 class="text-center">#{submission.userUsername}</h5></td>
+                    <td class="col-md-3" scope="col"><h2
+                            class="text-center">#{submission.achievedResult} / #{detailsProblemBean.problem.points} (#{submission.achievedPercentage} %)</h2>
+                    </td>
+                    <td class="col-md-2 d-flex justify-content-around" scope="col">
+                        <a href="/submissions/details/#{submission.id}"
+                           class="btn bg-judge text-white font-weight-bold pt-2"><h4>Details</h4></a>
+                    </td>
+                </tr>
+            </c:forEach>
             </tbody>
         </table>
         <hr class="hr-2 bg-judge"/>

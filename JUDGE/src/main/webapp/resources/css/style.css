@@ -36,6 +36,9 @@ hr.hr-2 {
     font-family: 'Inconsolata', monospace;
     background-color: #F5F5F5;
     color: #2F4F4F;
+    white-space: pre-wrap;
+    padding: 1px;
+    margin: 0;
 }
 
 textarea {
@@ -51,4 +54,10 @@ textarea {
     color: red;
     margin: 8px;
     text-align: center
+}
+
+.alert-warning {
+    margin: 0 auto 10px auto;
+    width: 50%;
+    text-align: center;
 }

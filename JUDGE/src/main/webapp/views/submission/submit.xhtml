@@ -2,7 +2,7 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
 >
     <ui:define name="main-content">
-        <h1 class="text-center text-judge">Problem - FIX MEEE</h1>
+        <h1 class="text-center text-judge">Problem - #{createSubmissionViewBean.problemName}</h1>
         <hr class="hr-2 bg-judge"/>
         <h3 class="text-judge my-3">Submit your code here:</h3>
         <h:form id="create-submission-form" class="form">
@@ -10,12 +10,17 @@
                 <h:inputTextarea class="code-line" value="#{createSubmissionBean.model.code}"/>
             </div>
             <hr class="hr-2 bg-judge"/>
+            <div class="alert alert-warning alert-dismissible fade show">
+                <strong>Warning!</strong> If the page refreshes after Submit, the code didn't compile.
+                The code needs to wrapped in a function. Please try again.
+                <button type="button" class="close" data-dismiss="alert">&#215;</button>
+            </div>
             <div class="d-flex justify-content-center">
                 <h:commandButton styleClass="btn bg-judge font-weight-bold text-white" value="Submit"
                                  action="#{createSubmissionBean.create}"/>
             </div>
             <hr class="hr-2 bg-judge"/>
         </h:form>
-        <h:messages styleClass="error-msg"/>
+
     </ui:define>
 </ui:composition>

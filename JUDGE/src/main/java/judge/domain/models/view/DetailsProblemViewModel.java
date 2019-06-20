@@ -14,5 +14,6 @@ public class DetailsProblemViewModel {
     private String id;
     private String name;
     private Integer points;
-    private List<DetailsSubmissionViewModel> submissions;
+    private List<ProblemSubmissionListViewModel> submissions;
+    private Double successRate;
 }

@@ -1,6 +1,7 @@
 package judge.services;
 
 import judge.domain.entities.Problem;
+import judge.domain.entities.Submission;
 import judge.domain.models.binding.CreateProblemBindingModel;
 import judge.domain.models.service.ProblemServiceModel;
 import judge.domain.models.view.DetailsProblemViewModel;
@@ -35,8 +36,23 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     @Override
-    public DetailsProblemViewModel findByIdWithSubmissions(String id) {
-        return this.mapper.map(this.problemRepository.findByIdWithSubmissions(id), DetailsProblemViewModel.class);
+    public DetailsProblemViewModel findDetailsModelById(String id) {
+        DetailsProblemViewModel model = this.mapper.map(this.problemRepository.findByIdWithSubmissions(id), DetailsProblemViewModel.class);
+        final int[] maxPointsSubmissionCount = {0};
+
+        model.setSubmissions(model.getSubmissions().parallelStream()
+                .peek(sub -> {
+                    if (sub.getAchievedResult().equals(model.getPoints())) {
+                        maxPointsSubmissionCount[0]++;
+                    }
+                    Integer percentage = (sub.getAchievedResult() * 100) / model.getPoints();
+                    sub.setAchievedPercentage(percentage);
+                })
+                .collect(Collectors.toList()));
+
+        model.setSuccessRate(((double) maxPointsSubmissionCount[0] / model.getSubmissions().size()) * 100);
+        if (model.getSuccessRate().isNaN()) model.setSuccessRate(0d);
+        return model;
     }
 
     @Override
@@ -50,11 +66,20 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     @Override
-    public List<HomeProblemViewModel> findAll() {
-        return this.problemRepository
-                .findAll()
-                .stream()
-                .map(problem -> this.mapper.map(problem, HomeProblemViewModel.class))
+    public List<HomeProblemViewModel> findAll(String userId) {
+        return this.problemRepository.findAllWithUserSubmissions().parallelStream()
+                .map(problem -> {
+                    HomeProblemViewModel model = this.mapper.map(problem, HomeProblemViewModel.class);
+                    int userAchievedResult = 0;
+                    for (Submission submission : problem.getSubmissions()) {
+                        if (submission.getUser().getId().equals(userId) && submission.getAchievedResult() > userAchievedResult) {
+                            userAchievedResult = submission.getAchievedResult();
+                        }
+                    }
+
+                    model.setCompletion((userAchievedResult * 100) / problem.getPoints());
+                    return model;
+                })
                 .collect(Collectors.toList());
     }
 }

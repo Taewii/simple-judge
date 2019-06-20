@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         }
 
         return this.userRepository.findByAttributeAndValue("username", model.getUsername())
-                .stream()
+                .parallelStream()
                 .filter(user -> {
                     boolean valid = false;
                     try {

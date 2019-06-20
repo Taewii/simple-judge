@@ -11,11 +11,11 @@ public interface ProblemService {
 
     boolean create(CreateProblemBindingModel model);
 
-    DetailsProblemViewModel findByIdWithSubmissions(String id);
+    DetailsProblemViewModel findDetailsModelById(String id);
 
     ProblemServiceModel getProblemById(String id);
 
     String getProblemNameById(String id);
 
-    List<HomeProblemViewModel> findAll();
+    List<HomeProblemViewModel> findAll(String userId);
 }

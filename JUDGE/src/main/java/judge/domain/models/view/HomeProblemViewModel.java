@@ -11,4 +11,5 @@ public class HomeProblemViewModel {
 
     private String id;
     private String name;
+    private Integer completion;
 }
