@@ -1,0 +1,47 @@
+<ui:composition template="../templates/base-layout.xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:define name="main-content">
+        <h1 class="text-center text-judge">Problem Details - #{detailsProblemBean.problem.name}</h1>
+        <hr class="hr-2 bg-judge"/>
+        <div class="d-flex justify-content-between">
+            <h2 class="text-judge">Problem Id - #{detailsProblemBean.problem.id}</h2>
+            <h2 class="text-judge">
+                Success Rate -
+                <h:outputText value="#{detailsProblemBean.problem.successRate}">
+                    <f:convertNumber pattern="#0.00"/>
+                </h:outputText>
+                %
+            </h2>
+        </div>
+        <hr class="hr-2 bg-judge"/>
+        <h3 class="text-judge text-center">Problem Submissions</h3>
+        <hr class="hr-2 bg-judge"/>
+        <table class="table table-hover text-judge">
+            <thead>
+            <tr class="row">
+                <th class="col-md-4" scope="col"><h5 class="text-center">Submission</h5></th>
+                <th class="col-md-3" scope="col"><h5 class="text-center">User</h5></th>
+                <th class="col-md-3" scope="col"><h5 class="text-center">Achieved Result</h5></th>
+                <th class="col-md-2" scope="col"><h5 class="text-center">Actions</h5></th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="#{detailsProblemBean.problem.submissions}" var="submission">
+                <tr class="row">
+                    <td class="col-md-4" scope="col"><h5 class="text-center">#{submission.id}</h5></td>
+                    <td class="col-md-3" scope="col"><h5 class="text-center">#{submission.userUsername}</h5></td>
+                    <td class="col-md-3" scope="col"><h2
+                            class="text-center">#{submission.achievedResult} / #{detailsProblemBean.problem.points} (#{submission.achievedPercentage} %)</h2>
+                    </td>
+                    <td class="col-md-2 d-flex justify-content-around" scope="col">
+                        <a href="/submissions/details/#{submission.id}"
+                           class="btn bg-judge text-white font-weight-bold pt-2"><h4>Details</h4></a>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+        <hr class="hr-2 bg-judge"/>
+    </ui:define>
+</ui:composition>
