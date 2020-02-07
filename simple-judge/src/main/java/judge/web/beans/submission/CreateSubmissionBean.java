@@ -25,7 +25,7 @@ public class CreateSubmissionBean extends BaseBean {
         String problemId = super.externalContext.getRequestHeaderMap().get("referer").substring(38);
         String userId = (String) super.externalContext.getSessionMap().get("user-id");
 
-        this.submissionService.create(this.model, problemId, userId)
+        submissionService.create(model, problemId, userId)
                 .ifPresentOrElse(sub -> super.redirect("/submissions/details/" + sub),
                         () -> super.redirect("/problems/submit/" + problemId));
     }

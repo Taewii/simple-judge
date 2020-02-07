@@ -23,7 +23,7 @@ public class UserLoginBean extends BaseBean {
     }
 
     public void login() {
-        this.userService.login(this.model).ifPresentOrElse(user -> {
+        userService.login(model).ifPresentOrElse(user -> {
             HttpSession session = (HttpSession) super.externalContext.getSession(true);
             session.setAttribute("user-id", user.getId());
             session.setAttribute("username", user.getUsername());

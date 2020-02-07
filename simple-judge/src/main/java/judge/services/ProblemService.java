@@ -6,10 +6,11 @@ import judge.domain.models.view.DetailsProblemViewModel;
 import judge.domain.models.view.HomeProblemViewModel;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProblemService {
 
-    boolean create(CreateProblemBindingModel model);
+    Optional<String> create(CreateProblemBindingModel model);
 
     DetailsProblemViewModel findDetailsModelById(String id);
 

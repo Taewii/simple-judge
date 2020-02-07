@@ -47,9 +47,9 @@ public class SubmissionServiceImpl implements SubmissionService {
         Random random = new Random();
         ProblemServiceModel problemById = this.problemService.getProblemById(problemId);
 
-        Submission entity = this.mapper.map(model, Submission.class);
-        entity.setUser(this.mapper.map(this.userService.getUserById(userId), User.class));
-        entity.setProblem(this.mapper.map(problemById, Problem.class));
+        Submission entity = mapper.map(model, Submission.class);
+        entity.setUser(mapper.map(userService.getUserById(userId), User.class));
+        entity.setProblem(mapper.map(problemById, Problem.class));
         entity.setCreatedOn(LocalDateTime.now());
         entity.setCode((Arrays.stream(model.getCode()
                 .split("\r\n"))
@@ -74,6 +74,6 @@ public class SubmissionServiceImpl implements SubmissionService {
 
     @Override
     public DetailsSubmissionViewModel findDetailsViewModelById(String id) {
-        return this.mapper.map(this.submissionRepository.findOne(id), DetailsSubmissionViewModel.class);
+        return mapper.map(submissionRepository.findOne(id), DetailsSubmissionViewModel.class);
     }
 }

@@ -22,7 +22,7 @@ public class UserRegisterBean extends BaseBean {
     }
 
     public void register() {
-        if (this.userService.register(this.model)) {
+        if (userService.register(model)) {
             super.redirect("/login");
         } else {
             super.addMessage("Registration failed. Please try again.");

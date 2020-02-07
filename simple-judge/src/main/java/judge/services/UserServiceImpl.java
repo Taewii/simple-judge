@@ -40,10 +40,10 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
 
-        User entity = this.mapper.map(user, User.class);
+        User entity = mapper.map(user, User.class);
 
         try {
-            this.userRepository.save(entity);
+            userRepository.save(entity);
         } catch (EJBTransactionRolledbackException e) {
             return false;
         }
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException(violationsMessage);
         }
 
-        return this.userRepository.findByAttributeAndValue("username", model.getUsername())
+        return userRepository.findByAttributeAndValue("username", model.getUsername())
                 .parallelStream()
                 .filter(user -> {
                     boolean valid = false;
@@ -70,17 +70,17 @@ public class UserServiceImpl implements UserService {
 
                     return valid;
                 })
-                .map(user -> this.mapper.map(user, LoggedInUserViewModel.class))
+                .map(user -> mapper.map(user, LoggedInUserViewModel.class))
                 .findFirst();
     }
 
     @Override
     public void update(User user) {
-        this.userRepository.update(user);
+        userRepository.update(user);
     }
 
     @Override
     public UserServiceModel getUserById(String id) {
-        return this.mapper.map(this.userRepository.findOne(id), UserServiceModel.class);
+        return mapper.map(userRepository.findOne(id), UserServiceModel.class);
     }
 }

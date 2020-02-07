@@ -13,14 +13,14 @@ public abstract class BaseBean {
 
     protected void redirect(String url) {
         try {
-            this.externalContext.redirect(url);
+            externalContext.redirect(url);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     protected Runnable addMessageRunnable(String message) {
-        return () -> this.facesContext.addMessage(null, new FacesMessage(message));
+        return () -> facesContext.addMessage(null, new FacesMessage(message));
     }
 
     protected void addMessage(String message) {

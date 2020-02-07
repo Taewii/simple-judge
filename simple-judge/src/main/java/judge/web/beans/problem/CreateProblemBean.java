@@ -22,11 +22,8 @@ public class CreateProblemBean extends BaseBean {
     }
 
     public void create() {
-        if (this.problemService.create(this.model)) {
-            super.redirect("/");
-        } else {
-            super.addMessage("Unable to create problem. Please try again");
-        }
+        problemService.create(model)
+                .ifPresentOrElse(super::addMessage, () -> super.redirect("/"));
     }
 
     public CreateProblemBindingModel getModel() {

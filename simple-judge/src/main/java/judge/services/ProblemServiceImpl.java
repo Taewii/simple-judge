@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ProblemServiceImpl implements ProblemService {
@@ -26,18 +27,19 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     @Override
-    public boolean create(CreateProblemBindingModel model) {
-        if (!ModelValidator.isValid(model)) {
-            return false;
+    public Optional<String> create(CreateProblemBindingModel model) {
+        String errors = ModelValidator.validateModel(model);
+        if (errors != null) {
+            return Optional.of(errors);
         }
 
-        this.problemRepository.save(this.mapper.map(model, Problem.class));
-        return true;
+        problemRepository.save(mapper.map(model, Problem.class));
+        return Optional.empty();
     }
 
     @Override
     public DetailsProblemViewModel findDetailsModelById(String id) {
-        DetailsProblemViewModel model = this.mapper.map(this.problemRepository.findByIdWithSubmissions(id), DetailsProblemViewModel.class);
+        DetailsProblemViewModel model = mapper.map(problemRepository.findByIdWithSubmissions(id), DetailsProblemViewModel.class);
         final int[] maxPointsSubmissionCount = {0};
 
         model.setSubmissions(model.getSubmissions().parallelStream()
@@ -57,19 +59,19 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     public ProblemServiceModel getProblemById(String id) {
-        return this.mapper.map(this.problemRepository.findOne(id), ProblemServiceModel.class);
+        return mapper.map(problemRepository.findOne(id), ProblemServiceModel.class);
     }
 
     @Override
     public String getProblemNameById(String id) {
-        return this.problemRepository.findOne(id).getName();
+        return problemRepository.findOne(id).getName();
     }
 
     @Override
     public List<HomeProblemViewModel> findAll(String userId) {
-        return this.problemRepository.findAllWithUserSubmissions().parallelStream()
+        return problemRepository.findAllWithUserSubmissions().parallelStream()
                 .map(problem -> {
-                    HomeProblemViewModel model = this.mapper.map(problem, HomeProblemViewModel.class);
+                    HomeProblemViewModel model = mapper.map(problem, HomeProblemViewModel.class);
                     int userAchievedResult = 0;
                     for (Submission submission : problem.getSubmissions()) {
                         if (submission.getUser().getId().equals(userId) && submission.getAchievedResult() > userAchievedResult) {

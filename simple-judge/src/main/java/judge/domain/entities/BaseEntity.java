@@ -12,7 +12,7 @@ import javax.persistence.MappedSuperclass;
 @Getter
 @Setter
 @MappedSuperclass
-class BaseEntity implements Identifiable<String> {
+abstract class BaseEntity implements Identifiable<String> {
 
     @Id
     @GeneratedValue(generator = "uuid-string")
